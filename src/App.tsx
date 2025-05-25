@@ -1,33 +1,26 @@
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import type { Todo } from "./types/Todo";
+import { TodoForm } from "./components/TodoForm";
+import { TodoList } from "./components/TodoList";
 import "./App.css";
-import { TaskForm } from "./components/TaskForm";
-import { TaskList } from "./components/TaskList";
-import { Task } from "./types/Task";
 
-function App() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+export default function App() {
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  const addTask = (title: string) => {
-    const newTask: Task = {
-      id: uuidv4(),
-      title,
-      completed: false,
-      createdAt: new Date(),
-    };
-    setTasks([...tasks, newTask]);
+  const handleAddTodo = (todo: Todo) => {
+    setTodos((prevTodos) => [...prevTodos, todo]);
   };
 
-  const toggleTask = (id: string) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
+  const handleToggleTodo = (id: string) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
-  const deleteTask = (id: string) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const handleDeleteTodo = (id: string) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
   return (
@@ -36,15 +29,13 @@ function App() {
         <h1>Personal Task Manager</h1>
       </header>
       <main className="app-main">
-        <TaskForm onAddTask={addTask} />
-        <TaskList
-          tasks={tasks}
-          onToggleTask={toggleTask}
-          onDeleteTask={deleteTask}
+        <TodoForm onAddTodo={handleAddTodo} />
+        <TodoList
+          todos={todos}
+          onToggleTodo={handleToggleTodo}
+          onDeleteTodo={handleDeleteTodo}
         />
       </main>
     </div>
   );
 }
-
-export default App;

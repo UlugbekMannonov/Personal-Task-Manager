@@ -1,35 +1,57 @@
-.task-form {
+.todo-form {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
 }
 
-.task-input {
+.input-group {
   flex: 1;
-  padding: 0.75rem;
-  font-size: 1rem;
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-text);
-  transition: border-color var(--transition), box-shadow var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.task-input:focus {
+.todo-input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.todo-input::placeholder {
+  color: var(--color-text-light);
+}
+
+.todo-input:focus {
+  outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
-  outline: none;
+}
+
+.todo-input.error {
+  border-color: var(--color-error);
+}
+
+.error-message {
+  font-size: 0.875rem;
+  color: var(--color-error);
 }
 
 .add-button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
+  font-weight: 500;
   color: white;
   background-color: var(--color-primary);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: background-color var(--transition);
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
 }
 
 .add-button:hover {
@@ -41,9 +63,8 @@
 }
 
 @media (max-width: 640px) {
-  .task-form {
+  .todo-form {
     flex-direction: column;
-    gap: 0.5rem;
   }
 
   .add-button {
