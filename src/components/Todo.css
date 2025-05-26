@@ -8,6 +8,19 @@
   margin-bottom: 0.75rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 4px solid transparent;
+}
+
+.todo.priority-high {
+  border-left-color: var(--priority-high-color, #ef4444);
+}
+
+.todo.priority-medium {
+  border-left-color: var(--priority-medium-color, #f59e0b);
+}
+
+.todo.priority-low {
+  border-left-color: var(--priority-low-color, #10b981);
 }
 
 .todo:hover {
@@ -43,6 +56,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  flex: 1;
 }
 
 .todo-title {
@@ -50,11 +64,63 @@
   font-weight: 500;
   color: var(--text-primary);
   margin: 0;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.todo-title:hover {
+  background-color: var(--hover-color);
+}
+
+.todo-title:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.todo-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .todo-date {
   font-size: 0.875rem;
   color: var(--text-secondary);
+}
+
+.todo-priority {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.todo-priority:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-alpha);
+}
+
+.todo-priority.priority-high {
+  border-color: var(--priority-high-color, #ef4444);
+  color: var(--priority-high-color, #ef4444);
+}
+
+.todo-priority.priority-medium {
+  border-color: var(--priority-medium-color, #f59e0b);
+  color: var(--priority-medium-color, #f59e0b);
+}
+
+.todo-priority.priority-low {
+  border-color: var(--priority-low-color, #10b981);
+  color: var(--priority-low-color, #10b981);
 }
 
 .todo-delete {
@@ -80,6 +146,28 @@
   outline-offset: 2px;
 }
 
+.todo-edit-form {
+  flex: 1;
+}
+
+.todo-edit-input {
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--background-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  padding: 0.25rem;
+  margin: -0.25rem 0;
+}
+
+.todo-edit-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-alpha);
+}
+
 @media (max-width: 640px) {
   .todo {
     padding: 0.75rem;
@@ -87,6 +175,10 @@
 
   .todo-content {
     gap: 0.75rem;
+  }
+
+  .todo-meta {
+    gap: 0.5rem;
   }
 
   .todo-delete {

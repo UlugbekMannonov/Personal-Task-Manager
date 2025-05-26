@@ -26,6 +26,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ onAddTodo }) => {
       title: trimmedTitle,
       completed: false,
       createdAt: new Date(),
+      priority: "medium"
     };
 
     onAddTodo(newTodo);
