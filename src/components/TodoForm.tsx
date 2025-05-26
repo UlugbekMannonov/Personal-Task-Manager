@@ -25,7 +25,9 @@ export const TodoForm: React.FC<TodoFormProps> = ({ onAddTodo }) => {
       id: uuidv4(),
       title: trimmedTitle,
       completed: false,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
+      dueDate: null,
+      tags: [],
       priority: "medium"
     };
 

@@ -1,0 +1,128 @@
+.tag-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tag-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border: none;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--tag-color) 15%, transparent);
+  color: var(--tag-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-button:hover {
+  background-color: color-mix(in srgb, var(--tag-color) 25%, transparent);
+}
+
+.tag-button.selected {
+  background-color: var(--tag-color);
+  color: white;
+}
+
+.add-tag-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 2px dashed var(--border-color);
+  border-radius: 999px;
+  background: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-tag-button:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background-color: var(--hover-color);
+}
+
+.add-tag-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: var(--surface-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tag-input {
+  padding: 0.5rem;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.tag-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-alpha);
+}
+
+.tag-form-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag-submit,
+.tag-cancel {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-submit {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+}
+
+.tag-submit:hover {
+  background-color: color-mix(in srgb, var(--primary-color) 80%, black);
+}
+
+.tag-cancel {
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+}
+
+.tag-cancel:hover {
+  background-color: var(--hover-color);
+}
+
+@media (max-width: 640px) {
+  .tag-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.813rem;
+  }
+
+  .add-tag-form {
+    padding: 0.5rem;
+  }
+}
