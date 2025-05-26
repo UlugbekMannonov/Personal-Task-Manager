@@ -1,5 +1,5 @@
 import React from "react";
-import { Todo as TodoType } from "../types/Todo";
+import { type Todo as TodoType } from "../types/Todo";
 import "./Todo.css";
 
 interface TodoProps {
@@ -8,35 +8,37 @@ interface TodoProps {
   onDelete: (id: string) => void;
 }
 
-export const Todo: React.FC<TodoProps> = ({ todo, onToggle, onDelete }) => {
-  const handleToggle = () => {
-    onToggle(todo.id);
-  };
-
-  const handleDelete = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onDelete(todo.id);
-  };
+export function Todo({ todo, onToggle, onDelete }: TodoProps) {
+  const formattedDate = new Date(todo.createdAt).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 
   return (
-    <div className={`todo-item ${todo.completed ? "completed" : ""}`}>
-      <label className="todo-label">
+    <div className={`todo ${todo.completed ? "completed" : ""}`}>
+      <div className="todo-content">
         <input
           type="checkbox"
           checked={todo.completed}
-          onChange={handleToggle}
+          onChange={() => onToggle(todo.id)}
           className="todo-checkbox"
+          aria-label={`Mark ${todo.title} as ${
+            todo.completed ? "incomplete" : "complete"
+          }`}
         />
-        <span className="todo-title">{todo.title}</span>
-      </label>
+        <div className="todo-details">
+          <h3 className="todo-title">{todo.title}</h3>
+          <span className="todo-date">Created: {formattedDate}</span>
+        </div>
+      </div>
       <button
-        onClick={handleDelete}
-        className="delete-button"
-        aria-label="Delete todo"
+        onClick={() => onDelete(todo.id)}
+        className="todo-delete"
+        aria-label={`Delete ${todo.title}`}
       >
         ×
       </button>
     </div>
   );
-};
+}

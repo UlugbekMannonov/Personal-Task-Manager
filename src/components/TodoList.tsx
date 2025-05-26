@@ -1,5 +1,5 @@
 import React from "react";
-import type { Todo as TodoType } from "../types/Todo";
+import { type Todo as TodoType } from "../types/Todo";
 import { Todo } from "./Todo";
 import "./TodoList.css";
 
@@ -9,15 +9,11 @@ interface TodoListProps {
   onDeleteTodo: (id: string) => void;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({
-  todos,
-  onToggleTodo,
-  onDeleteTodo,
-}) => {
+export function TodoList({ todos, onToggleTodo, onDeleteTodo }: TodoListProps) {
   if (todos.length === 0) {
     return (
-      <div className="empty-state">
-        <p>No todos yet. Add one above!</p>
+      <div className="todo-list-empty">
+        <p>No tasks yet. Add one to get started!</p>
       </div>
     );
   }
@@ -34,4 +30,4 @@ export const TodoList: React.FC<TodoListProps> = ({
       ))}
     </div>
   );
-};
+}
