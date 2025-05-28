@@ -3,10 +3,12 @@ import type { Todo, Priority, Tag } from "./types/Todo";
 import { TodoForm } from "./components/TodoForm";
 import { TodoList } from "./components/TodoList";
 import { TodoFilter, type FilterStatus } from "./components/TodoFilter";
+import { TodoSearch } from "./components/TodoSearch";
 import "./App.css";
 
 const STORAGE_KEY = "personal-task-manager-todos";
 const TAGS_STORAGE_KEY = "personal-task-manager-tags";
+const ORDER_STORAGE_KEY = "personal-task-manager-order";
 
 const DEFAULT_COLORS = [
   "#ef4444", // red
@@ -36,12 +38,23 @@ const loadStoredTodos = (): Todo[] => {
     // Validate and transform the data
     return parsedTodos.map((todo: any) => ({
       ...todo,
-      createdAt: new Date(todo.createdAt), // Convert ISO string back to Date
-      priority: todo.priority || "medium", // Ensure priority exists for older todos
-      tags: todo.tags || [], // Ensure tags exist for older todos
+      createdAt: todo.createdAt, // Keep as ISO string
+      priority: todo.priority || "medium",
+      tags: todo.tags || [],
     }));
   } catch (error) {
     console.error("Error loading todos from localStorage:", error);
+    return [];
+  }
+};
+
+// Helper function to safely parse stored order
+const loadStoredOrder = (): string[] => {
+  try {
+    const storedOrder = localStorage.getItem(ORDER_STORAGE_KEY);
+    return storedOrder ? JSON.parse(storedOrder) : [];
+  } catch (error) {
+    console.error("Error loading order from localStorage:", error);
     return [];
   }
 };
@@ -61,6 +74,8 @@ export default function App() {
   const [todos, setTodos] = useState<Todo[]>(loadStoredTodos);
   const [tags, setTags] = useState<Tag[]>(loadStoredTags);
   const [filter, setFilter] = useState<FilterStatus>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [order, setOrder] = useState<string[]>(loadStoredOrder);
 
   // Save todos to localStorage whenever they change
   useEffect(() => {
@@ -71,6 +86,15 @@ export default function App() {
     }
   }, [todos]);
 
+  // Save order to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(order));
+    } catch (error) {
+      console.error("Error saving order to localStorage:", error);
+    }
+  }, [order]);
+
   // Save tags to localStorage whenever they change
   useEffect(() => {
     try {
@@ -80,22 +104,52 @@ export default function App() {
     }
   }, [tags]);
 
-  // Calculate filtered todos and counts
+  // Calculate filtered and ordered todos
   const { filteredTodos, counts } = useMemo(() => {
-    const active = todos.filter((todo) => !todo.completed);
-    const completed = todos.filter((todo) => todo.completed);
+    // First, filter by search query
+    const searchFiltered = searchQuery
+      ? todos.filter((todo) =>
+          todo.title.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : todos;
+
+    // Then, filter by status
+    const active = searchFiltered.filter((todo) => !todo.completed);
+    const completed = searchFiltered.filter((todo) => todo.completed);
 
     const counts = {
-      all: todos.length,
+      all: searchFiltered.length,
       active: active.length,
       completed: completed.length,
     };
 
-    const filtered =
-      filter === "all" ? todos : filter === "active" ? active : completed;
+    let filtered =
+      filter === "all"
+        ? searchFiltered
+        : filter === "active"
+        ? active
+        : completed;
+
+    // Apply ordering
+    filtered = filtered.sort((a, b) => {
+      const aIndex = order.indexOf(a.id);
+      const bIndex = order.indexOf(b.id);
+
+      // If both items are in order array, use their order
+      if (aIndex !== -1 && bIndex !== -1) {
+        return aIndex - bIndex;
+      }
+
+      // If only one item is in order array, it comes first
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+
+      // If neither item is in order array, use creation date
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
 
     return { filteredTodos: filtered, counts };
-  }, [todos, filter]);
+  }, [todos, filter, searchQuery, order]);
 
   const handleAddTodo = (todo: Todo) => {
     const todoWithDefaults = {
@@ -104,6 +158,7 @@ export default function App() {
       tags: [],
     };
     setTodos((prevTodos) => [...prevTodos, todoWithDefaults]);
+    setOrder((prevOrder) => [todoWithDefaults.id, ...prevOrder]);
   };
 
   const handleToggleTodo = (id: string) => {
@@ -151,6 +206,16 @@ export default function App() {
     setTags((prevTags) => [...prevTags, newTag]);
   };
 
+  const handleReorderTodos = (startIndex: number, endIndex: number) => {
+    const reorderedTodos = Array.from(filteredTodos);
+    const [removed] = reorderedTodos.splice(startIndex, 1);
+    reorderedTodos.splice(endIndex, 0, removed);
+
+    // Update the order array based on the new positions
+    const newOrder = reorderedTodos.map((todo) => todo.id);
+    setOrder(newOrder);
+  };
+
   return (
     <div className="app">
       <header className="app-header">
@@ -158,6 +223,7 @@ export default function App() {
       </header>
       <main className="app-main">
         <TodoForm onAddTodo={handleAddTodo} />
+        <TodoSearch searchQuery={searchQuery} onSearchChange={setSearchQuery} />
         <TodoFilter
           currentFilter={filter}
           onFilterChange={setFilter}
@@ -170,6 +236,7 @@ export default function App() {
           onEditTodo={handleEditTodo}
           onPriorityChange={handlePriorityChange}
           onTagsChange={handleTagsChange}
+          onReorderTodos={handleReorderTodos}
           availableTags={tags}
           onCreateTag={handleCreateTag}
         />

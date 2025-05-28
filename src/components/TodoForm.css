@@ -1,73 +1,190 @@
 .todo-form {
-  display: flex;
-  gap: 1rem;
   margin-bottom: 2rem;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--surface-color);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.input-container:hover {
+  border-color: var(--primary-color-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.input-container.focused {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-alpha);
+}
+
+.input-container.error {
+  border-color: var(--error-color);
+}
+
+.plus-icon {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.input-container:hover .plus-icon,
+.input-container.focused .plus-icon {
+  color: var(--primary-color);
 }
 
 .input-group {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  position: relative;
+  min-width: 0;
 }
 
 .todo-input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.5rem 0;
   font-size: 1rem;
-  color: var(--color-text);
-  background-color: var(--color-surface);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.todo-input::placeholder {
-  color: var(--color-text-light);
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
 }
 
 .todo-input:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
 }
 
-.todo-input.error {
-  border-color: var(--color-error);
+.todo-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.8;
+  font-style: italic;
 }
 
 .error-message {
+  position: absolute;
+  left: 0;
+  bottom: -1.75rem;
+  color: var(--error-color);
   font-size: 0.875rem;
-  color: var(--color-error);
+  font-weight: 500;
+}
+
+.input-hint {
+  position: absolute;
+  right: 0;
+  bottom: -1.75rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-style: italic;
 }
 
 .add-button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: white;
-  background-color: var(--color-primary);
-  border: none;
-  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  color: var(--text-secondary);
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .add-button:hover {
-  background-color: var(--color-primary-hover);
+  color: var(--primary-color);
+  background-color: var(--hover-color);
+  border-color: var(--primary-color);
+  transform: scale(1.05);
 }
 
 .add-button:active {
-  background-color: var(--color-primary-active);
+  transform: scale(0.95);
 }
 
-@media (max-width: 640px) {
+.add-button:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-alpha);
+}
+
+/* Tablet Styles */
+@media (max-width: 768px) {
   .todo-form {
-    flex-direction: column;
+    margin-bottom: 1.75rem;
+  }
+
+  .input-container {
+    padding: 0.375rem 0.625rem;
+  }
+
+  .todo-input {
+    font-size: 0.9375rem;
   }
 
   .add-button {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .plus-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 480px) {
+  .todo-form {
+    margin-bottom: 2.5rem;
+  }
+
+  .input-container {
+    padding: 0.5rem;
+    border-radius: 10px;
+  }
+
+  .todo-input {
+    font-size: 1rem;
+  }
+
+  .error-message {
+    bottom: -2.25rem;
+    font-size: 0.75rem;
     width: 100%;
+  }
+
+  .input-hint {
+    bottom: -2.25rem;
+    width: 100%;
+    text-align: center;
+    right: unset;
+  }
+
+  .add-button {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .plus-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Hide hover effects on mobile */
+  .input-container:hover {
+    border-color: var(--border-color);
+    box-shadow: none;
+  }
+
+  .add-button:hover {
+    transform: none;
   }
 }
