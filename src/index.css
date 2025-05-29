@@ -76,16 +76,23 @@ select {
 }
 
 /* Theme Variables */
-:root {
-  --color-primary: #0066cc;
-  --color-primary-hover: #0052a3;
-  --color-primary-active: #004080;
-  --color-text: #213547;
-  --color-text-light: #666;
-  --color-background: #f0f2f5;
-  --color-surface: #ffffff;
-  --color-border: #eee;
-  --color-error: #ff4444;
+:root,
+:root[data-theme="light"] {
+  --primary-color: #0066cc;
+  --primary-color-light: #3385d6;
+  --primary-color-alpha: rgba(0, 102, 204, 0.2);
+  --text-primary: #213547;
+  --text-secondary: #666666;
+  --text-on-primary: #ffffff;
+  --background-color: #f0f2f5;
+  --surface-color: #ffffff;
+  --hover-color: rgba(0, 0, 0, 0.05);
+  --border-color: #e5e7eb;
+  --error-color: #dc2626;
+  --error-bg: rgba(220, 38, 38, 0.1);
+  --priority-high-color: #ef4444;
+  --priority-medium-color: #f59e0b;
+  --priority-low-color: #10b981;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
   --radius-sm: 4px;
@@ -93,28 +100,36 @@ select {
   --transition: 0.2s ease;
 }
 
-/* Dark theme variables */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text: rgba(255, 255, 255, 0.87);
-    --color-text-light: #888;
-    --color-background: #242424;
-    --color-surface: #2a2a2a;
-    --color-border: #333;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3);
-  }
+:root[data-theme="dark"] {
+  --primary-color: #3b82f6;
+  --primary-color-light: #60a5fa;
+  --primary-color-alpha: rgba(59, 130, 246, 0.2);
+  --text-primary: rgba(255, 255, 255, 0.87);
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-on-primary: #ffffff;
+  --background-color: #1a1a1a;
+  --surface-color: #242424;
+  --hover-color: rgba(255, 255, 255, 0.05);
+  --border-color: #333333;
+  --error-color: #ef4444;
+  --error-bg: rgba(239, 68, 68, 0.2);
+  --priority-high-color: #f87171;
+  --priority-medium-color: #fbbf24;
+  --priority-low-color: #34d399;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Base styles */
 body {
-  background-color: var(--color-background);
-  color: var(--color-text);
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Focus styles */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
 

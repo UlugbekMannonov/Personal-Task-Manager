@@ -52,7 +52,13 @@
 
 .app-header {
   margin-bottom: 2rem;
-  text-align: center;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .app-header h1 {
@@ -63,7 +69,7 @@
 
 .app-main {
   flex: 1;
-  background-color: var(--background-color);
+  background-color: var(--surface-color);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: var(--shadow-md);

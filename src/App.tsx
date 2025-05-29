@@ -4,6 +4,9 @@ import { TodoForm } from "./components/TodoForm";
 import { TodoList } from "./components/TodoList";
 import { TodoFilter, type FilterStatus } from "./components/TodoFilter";
 import { TodoSearch } from "./components/TodoSearch";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { ThemeToggle } from "./components/ThemeToggle";
+import { Statistics } from "./components/Statistics";
 import "./App.css";
 
 const STORAGE_KEY = "personal-task-manager-todos";
@@ -217,30 +220,39 @@ export default function App() {
   };
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>Personal Task Manager</h1>
-      </header>
-      <main className="app-main">
-        <TodoForm onAddTodo={handleAddTodo} />
-        <TodoSearch searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-        <TodoFilter
-          currentFilter={filter}
-          onFilterChange={setFilter}
-          todoCount={counts}
-        />
-        <TodoList
-          todos={filteredTodos}
-          onToggleTodo={handleToggleTodo}
-          onDeleteTodo={handleDeleteTodo}
-          onEditTodo={handleEditTodo}
-          onPriorityChange={handlePriorityChange}
-          onTagsChange={handleTagsChange}
-          onReorderTodos={handleReorderTodos}
-          availableTags={tags}
-          onCreateTag={handleCreateTag}
-        />
-      </main>
-    </div>
+    <ThemeProvider>
+      <div className="app">
+        <header className="app-header">
+          <div className="header-content">
+            <h1>Personal Task Manager</h1>
+            <ThemeToggle />
+          </div>
+        </header>
+        <main className="app-main">
+          <Statistics todos={todos} />
+          <TodoForm onAddTodo={handleAddTodo} />
+          <TodoSearch
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
+          <TodoFilter
+            currentFilter={filter}
+            onFilterChange={setFilter}
+            todoCount={counts}
+          />
+          <TodoList
+            todos={filteredTodos}
+            onToggleTodo={handleToggleTodo}
+            onDeleteTodo={handleDeleteTodo}
+            onEditTodo={handleEditTodo}
+            onPriorityChange={handlePriorityChange}
+            onTagsChange={handleTagsChange}
+            onReorderTodos={handleReorderTodos}
+            availableTags={tags}
+            onCreateTag={handleCreateTag}
+          />
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }
